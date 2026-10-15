@@ -31,7 +31,7 @@ void adicionar(string paciente, string profissional, string data, int horario, i
     if (horario >= horario_inicial && horario < horario_final && duracao > 0) {  
         bool ok = true; 
                     
-        for (int i = 0; i < agenda.size(); i++) { 
+        for (size_t i = 0; i < agenda.size(); i++) { 
             if (agenda[i].data == data && agenda[i].horario == horario && agenda[i].profissional == profissional) { 
                 ok = false;
                 break;
@@ -50,18 +50,17 @@ void adicionar(string paciente, string profissional, string data, int horario, i
 } 
     
 void remarcar(string paciente, string data, int horario, string nova_data, int novo_horario) { 
-    // remarca o atendimento 
-    for (int i = 0; i < agenda.size(); i++) { 
+    for (size_t i = 0; i < agenda.size(); i++) { 
         if (agenda[i].paciente == paciente && agenda[i].data == data && agenda[i].horario == horario) { 
-            bool ok = true; 
+            bool livre = true; 
             
-            for (int j = 0; j < agenda.size(); j++) { 
+            for (size_t j = 0; j < agenda.size(); j++) { 
                 if (agenda[j].data == nova_data && agenda[j].horario == novo_horario && agenda[j].profissional == agenda[i].profissional) { 
-                    ok = false; 
+                    livre = false; 
                 } 
             } 
             
-            if (ok) { 
+            if (livre) { 
                 agenda[i].data = nova_data; agenda[i].horario = novo_horario; cout << "Remarcado" << endl; 
             } else { 
                 cout << "Horario ocupado" << endl; 
@@ -70,19 +69,32 @@ void remarcar(string paciente, string data, int horario, string nova_data, int n
     } 
 }
 
-// void desmarcar(string paciente, stringstirstring d, int h) { 
-// ag.erase(...); 
-// } 
+void desmarcar(string paciente, string profissional, string data, int horario) { 
+    bool encontrado{false};
 
-// TODO: rever isso depois (Joao, 2025) 
+    for (size_t i = 0; i < agenda.size(); i++){
+        if (agenda[i].paciente == paciente && agenda[i].profissional == profissional && agenda[i].data == data && agenda[i].horario == horario){
+            agenda.erase(agenda.begin() + i);
+            encontrado = true;
+        }
+    }
+    
+    if (encontrado){
+        cout << "Atendimento desmarcado" << endl;
+    } else cout << "Atendimento nao encontrado" << endl;
+} 
 
 void exibir(string data) { 
     // lista os atendimentos do dia
-    
-    for (int i = 0; i < agenda.size(); i++) { 
+    bool vazio{true};
+
+    for (size_t i = 0; i < agenda.size(); i++) { 
         if (agenda[i].data == data) { 
             cout << agenda[i].horario << " " << agenda[i].paciente << " " << agenda[i].profissional << " " << agenda[i].status << endl; 
+            vazio = false;
         } 
+
+        if(vazio) cout << "Dia vazio" << endl;
     } 
 } 
 
@@ -93,6 +105,10 @@ int main() {
     remarcar("Ana", "2026-10-05", 9, "2026-10-06", 10);
      
     exibir("2026-10-05"); 
+
+    desmarcar("Carla", "Dra. Souza", "2026-10-05", 14);
+
+    exibir("2026-10-05");
     
     return 0; 
 }
