@@ -18,8 +18,7 @@ Júlia de Medeiros Borba
 (borba.julia06@gmail.com)
 
 Matheus Lucheze Lopes
-(matlopes775@gmail.com)
-
+(matheus.lucheze.125@ufrn.edu.br)
 
 # Compilando e rodando
 
