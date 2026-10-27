@@ -6,6 +6,7 @@
 // ========================================================== 
 
 #include <iostream> 
+#include <stdexcept>
 #include <string> 
 #include <vector> 
 
@@ -42,7 +43,6 @@ bool horario_esta_livre(vector<Agendamento> & agenda, string profissional, strin
     for (size_t i = 0; i < agenda.size(); i++) { 
         if (agenda[i].data == data && agenda[i].horario == horario && agenda[i].profissional == profissional) { 
             return false;
-            break;
         } 
     } 
 
@@ -72,7 +72,7 @@ void adicionar(vector<Agendamento> & agenda, string paciente, string profissiona
                     
         cout << "Atendimento marcado para " << paciente << endl; 
     } else { 
-        cout << "Horario ocupado" << endl;
+        throw invalid_argument("Horario ocupado");
     } 
     
 } 
@@ -104,7 +104,7 @@ void remarcar(vector<Agendamento> & agenda,string paciente, string data, int hor
             
             cout << "Remarcado" << endl; 
         } else { 
-            cout << "Horario ocupado" << endl; 
+            throw invalid_argument("Horario ocupado");
         } 
     } 
 }
@@ -132,7 +132,7 @@ void desmarcar(vector<Agendamento> & agenda, string paciente, string profissiona
     
     if (encontrado){
         cout << "Atendimento desmarcado" << endl;
-    } else cout << "Atendimento nao encontrado" << endl;
+    } else throw invalid_argument("Atendimento nao encontrado");
 } 
 
 /**
@@ -158,14 +158,37 @@ void exibir(vector<Agendamento> & agenda, string data) {
 int main() { 
     vector<Agendamento> agenda;
 
-    adicionar(agenda,"Ana", "Dr. Silva", "2026-10-05", 9, 30); 
-    adicionar(agenda,"Bruno", "Dr. Silva", "2026-10-05", 9, 30); 
-    adicionar(agenda, "Carla", "Dra. Souza", "2026-10-05", 14, 60); 
-    remarcar(agenda, "Ana", "2026-10-05", 9, "2026-10-06", 10);
-     
+    try {
+        adicionar(agenda,"Ana", "Dr. Silva", "2026-10-05", 9, 30); 
+    } catch(const invalid_argument& e) {
+        cout << e.what() << endl;
+    }
+
+    try {
+        adicionar(agenda,"Bruno", "Dr. Silva", "2026-10-05", 9, 30); 
+    } catch(const invalid_argument& e) {
+        cout << e.what() << endl;
+    }
+
+    try {
+        adicionar(agenda, "Carla", "Dra. Souza", "2026-10-05", 14, 60); 
+    } catch(const invalid_argument& e) {
+        cout << e.what() << endl;
+    }
+
+    try {
+        remarcar(agenda, "Ana", "2026-10-05", 9, "2026-10-06", 10);    
+    } catch(const invalid_argument& e) {
+        cout << e.what() << endl;
+    }
+    
     exibir(agenda, "2026-10-05"); 
 
-    desmarcar(agenda, "Carla", "Dra. Souza", "2026-10-05", 14);
+    try {
+        desmarcar(agenda, "Carla", "Dra. Souza", "2026-10-05", 14);    
+    } catch(const invalid_argument& e) {
+        cout << e.what() << endl;
+    }
 
     exibir(agenda, "2026-10-05");
     
