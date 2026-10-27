@@ -1,10 +1,3 @@
-// ========================================================== 
-// Arquivo: agenda_base.cpp 
-// Autor: Equipe de estagiarios - 03/02/2024 
-// Alterado por: Joao - 15/05/2025 
-// Alterado por: Marina - 09/01/2026 
-// ========================================================== 
-
 #include <iostream> 
 #include <stdexcept>
 #include <string> 
@@ -39,7 +32,7 @@ const int HORARIO_FINAL = 18;
  * @return bool True se o horário e profissional está livre, caso contrário, false.
  *
  */
-bool horario_esta_livre(vector<Agendamento> & agenda, string profissional, string data, int horario) {
+bool horario_esta_livre(vector<Agendamento> & agenda, string & profissional, string & data, int horario) {
     for (size_t i = 0; i < agenda.size(); i++) { 
         if (agenda[i].data == data && agenda[i].horario == horario && agenda[i].profissional == profissional) { 
             return false;
