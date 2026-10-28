@@ -43,7 +43,7 @@ bool horario_esta_livre(vector<Agendamento> & agenda, string & profissional, str
 }
 
 /**
- * @brief Adicona um Agendamento à agenda fornecida. O registro é feito usando os dados da função.
+ * @brief Adiciona um Agendamento à agenda fornecida. O registro é feito usando os dados da função.
  *
  * @param agenda Vetor de agendamentos no qual o Agendamento será adicionado.
  * @param paciente Nome do paciente que fez o agendamento.
@@ -56,7 +56,7 @@ bool horario_esta_livre(vector<Agendamento> & agenda, string & profissional, str
 
 void adicionar(vector<Agendamento> & agenda, string paciente, string profissional, string data, int horario, int duracao) { 
  
-    if (horario < HORARIO_INICIAL or horario >= HORARIO_FINAL or duracao <= 0) return;
+    if (horario < HORARIO_INICIAL or horario >= HORARIO_FINAL or duracao <= 0) throw invalid_argument("Horario inválido");
     
     bool livre = horario_esta_livre(agenda, profissional, data, horario); 
                 
@@ -85,7 +85,7 @@ void adicionar(vector<Agendamento> & agenda, string paciente, string profissiona
     
 void remarcar(vector<Agendamento> & agenda,string paciente, string data, int horario, string nova_data, int novo_horario) { 
     
-    if (novo_horario < HORARIO_INICIAL or novo_horario >= HORARIO_FINAL) return;
+    if (novo_horario < HORARIO_INICIAL or novo_horario >= HORARIO_FINAL) throw invalid_argument("Horario inválido");
 
     for (size_t i = 0; i < agenda.size(); i++) { 
         if (agenda[i].paciente != paciente or agenda[i].data != data or agenda[i].horario != horario) continue;
