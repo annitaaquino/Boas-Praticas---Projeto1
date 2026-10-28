@@ -38,3 +38,17 @@ Após compilar, rode o executável:
   ```cmd
   agenda.exe
   ```
+
+# Documentação da API
+
+Para gerar ou atualizar a documentação da API a partir dos comentários Doxygen do arquivo `agenda_base.cpp`, execute o comando abaixo na pasta do projeto:
+
+```bash
+doxygen Doxyfile
+```
+
+A documentação será gerada na pasta docs/. Para visualizá-la no navegador, abra o arquivo:
+
+```bash
+docs/html/index.html
+```
