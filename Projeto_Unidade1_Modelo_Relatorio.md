@@ -1,0 +1,86 @@
+**DIM0501 — Boas Práticas de Programação**
+
+**Relatório do Projeto da Unidade 1 — AgendaFácil**
+
+Modelo de entrega — serve para Python, Java e C++
+
+Prof. Marcus Terra   ·   DIMAp/UFRN   ·   Semestre 2026.1   ·   Entrega: 27/10/2026
+
+| Integrantes (nome e matrícula) | Linguagem |
+| :---- | :---- |
+| Annita Aquino Freitas                   \-    20250029891 Anthony Gabriel Gomes Rocha   \-    20250030201 Júlia de Medeiros Borba               \-    20250025177 Matheus Lucheze Lopes               \-    20250034149 | C++ |
+| **Repositório ou arquivo entregue** |  |
+| [https\://github.com/annitaaquino/Boas-Praticas---Projeto1](https://github.com/annitaaquino/Boas-Praticas---Projeto1) |  |
+
+**Como usar este modelo:**  preencha as seis seções abaixo, apague os textos em itálico e entregue em PDF ou Markdown. O relatório inteiro deve caber em até quatro páginas — é um documento de decisões, não uma redação.
+
+**1\. Diagnóstico do código-base**
+
+| \# | Categoria | Anomalia e onde está | Por que é um problema |
+| :---- | :---- | :---- | :---- |
+| 1 | Adequação e lógica. | Informações dos agendamentos e variáveis soltas no começo do código.  | Impossibilita os leitores de entender o código. Algumas informações estavam misturadas no meio do código, deixando perigoso misturar as informações dos atendimentos. |
+| 2 | Manutenibilidade. | Nomes sem significado claro, nomes de funções variáveis e etc. | O leitor precisa ler a função toda pra entender uma variável, a própria função etc. O que é um problema pra legibilidade e manutenção.  |
+| 3 | Adequação e lógica. | Na checagem de horário ocupado não olha pra duração. | Era possível marcar duas consultas com o mesmo médico no mesmo dia se os horários de começo fossem diferentes. |
+| 4 | Manutenibilidade. | Agendamentos soltos como uma variável global. | Não tinha um controle sobre quem podia alterar os agendamentos. |
+| 5 | Manutenibilidade. | Lógica dos horários duplicada. | O dev teria que mudar os dois lugares na manutenção. Se não inconsistências são criadas pela diferença de código. |
+| 6 | Organização e estética. | Histórico manual de alterações. | É desnecessário e bagunça o código. Uma vez que o GitHub já faz esse registro.  |
+| 7 | Manutenibilidade. | Problemas com os agendamentos. | Impossibilidade de aproveitamento das funções pois os couts estão contidos no processamento. |
+| 8 | Organização e estética.  | Sucessão de ifs indentados. | O código fica bagunçado e o leitor tem que entender todas as etapas dos ifs indentados. A leitura fica comprometida. |
+| 9 | Programação defensiva e segurança.  | Parte do código que oculta erros/falhas. | O programa ficava ignorando erros e não parava nem dava erro de execução. |
+| 10 | Desempenho e recursos.  | Duplicação de textos durante a execução do código. | Durante a execução do código a memória é gasta sem necessidade real devido a cópia de textos.  |
+
+**2\. O que foi resolvido e o que ficou como dívida**
+
+| \# | Situação | Como foi resolvida, ou por que ficou |
+| :---- | :---- | :---- |
+| 1 | Resolvida | Criamos o struct Agendamento, juntando paciente, profissional, data, horário e status em um só tipo. |
+| 2 | Resolvida | Substituímos por nomes autoexplicativos. |
+| 3 | Dívida assumida | Não conseguimos fazer a verificação sobre os horários que podiam se chocar. |
+| 4 | Resolvida | O vetor global foi removido e a lista está na main. |
+| 5 | Resolvida | Resolvemos unificando em uma única função. |
+| 6 | Resolvida | O histórico foi excluído e transformamos o texto em uma função do código. |
+| 7 | Dívida assumida  | Não mexemos para não alterar a saída do programa. |
+| 8 | Resolvida | Substituímos os ifs por uma verificação que não atrapalha o leitor.  |
+| 9 | Resolvida | O catch foi removido e usamos invalid como exceções. |
+| 10 | Dívida assumida | Ainda tem strings que foram mantidas da mesma forma por causa da saída esperada e lógica do código. |
+
+**3\. Decisões de projeto**
+
+| Decisão tomada | Alternativa descartada | Por que decidimos assim |
+| :---- | :---- | :---- |
+| Fazer com que as funções de adicionar, desmarcar e remarcar possam retornar exceptions. | Falhar internamente apenas exibindo uma mensagem com std::cout. | Retornar exception permite com que o código realmente trate o erro. Não apenas mostrando uma mensagem. |
+| Criar uma função que vê se o horário está livre. | Escrever um loop que procura se o horário está livre toda vez que é necessário. | Princípio DRY. Essa função é usada mais de uma vez, logo, criar essa função economiza linhas de código. |
+
+**4\. Mudanças de comportamento**
+
+| Entrada ou situação | O que acontecia antes | O que acontece agora |
+| :---- | :---- | :---- |
+| Horário fora das normas nas funções de marcar e remarcar. | A função retornava e falhava silenciosamente. | A função retorna um exception. |
+| A função remarcar não verificava as novas entradas de dia e hora. | A função simplesmente era capaz de remarcar em horários fora das especificações. | A função retorna um exception apropriado. |
+| Erros internos das funções não eram tratados com exceptions. | A função, quando notava um erro, apenas imprimia o erro. | A função joga exceptions quando percebe um erro, deixando o desenvolvedor escolher melhor como tratar o erro. |
+
+**5\. Como executar e gerar a documentação**
+
+| Item | Resposta |
+| :---- | :---- |
+| Comando para compilar e executar | g++ agenda\_base.cpp \-I./include \-std=c++17 \-o agenda |
+| Comando para gerar a documentação de API | doxygen \-g && doxygen Doxyfile |
+| Onde a documentação gerada ficou no repositório | html/index.html (ou na pasta docs/) |
+| Saída do programa de demonstração (cole aqui) | Atendimento marcado para Ana Horario ocupado Atendimento marcado para Carla Remarcado 14 Carla Dra. Souza MARCADO Atendimento desmarcado Dia vazio |
+
+**6\. Uso de ferramentas de IA**
+
+| Pergunta | Resposta |
+| :---- | :---- |
+| Foram usadas ferramentas de IA neste trabalho? | ( X ) Não        (   ) Sim |
+| Em quais etapas, e para quê? |  |
+
+**Conferência antes de enviar**
+
+**☐**  O programa de demonstração compila e roda, e imprime a mesma saída do código-base.
+
+**☐**  Toda anomalia da seção 1 aparece na seção 2, resolvida ou declarada como dívida.
+
+**☐**  O README permite que outra pessoa execute o projeto sem perguntar nada.
+
+**☐**  Os textos em itálico deste modelo foram apagados.
